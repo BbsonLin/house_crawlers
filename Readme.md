@@ -9,7 +9,7 @@ Guideline for using house-crawlers
 $ virtualenv venv
 $ cd venv/
 $ . bin/activate
-$ pip install scrapy
+$ pip install scrapyyyyyyyy
 ```
 
 # Run crawler
