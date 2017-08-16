@@ -9,7 +9,7 @@ Guideline for using house-crawlers
 $ virtualenv venv
 $ cd venv/
 $ . bin/activate
-$ pip install scrapygggg
+$ pip install scrapyyyyyyyygggg
 ```
 
 ## For Ubuntu leaving virtualenv
