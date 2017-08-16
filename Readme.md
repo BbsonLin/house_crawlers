@@ -12,15 +12,24 @@ $ . bin/activate
 $ pip install scrapy
 ```
 
-# Run crawler
-```bash
-$ cd house_591_crawler/
-$ scrapy crawl saleInfo -o saleInfo.json
-```
-
-##### You will see the crawled data in saleInfo.json file
-
-#### For Untuntu leaving virtualenv
+## For Ubuntu leaving virtualenv
 ```bash
 $ deactivate
 ```
+
+# Usage
+## Run crawler for specific sale region(中古屋)
+```bash
+$ cd house_591_crawler/
+$ scrapy crawl saleInfo -a regionid=1 -o saleInfo.json
+```
+*You will see the crawled data in saleInfo.json file*
+
+
+## Run crawler for all sale region(中古屋)
+```bash
+$ cd house_591_crawler/
+$ python getAllSale.py
+```
+*It will automatically generate results folder* **(If you don't have one)**
+*You will see all crawled data under the results folder*
