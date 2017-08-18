@@ -32,7 +32,7 @@ class SaleinfoSpider(scrapy.Spider):
         search_url = \
             "{}/home/search/list?type=2&&shType=host&&regionid={}".format(
                 self.start_urls[0], self.region_id)
-        yield scrapy.Request(search_url, callback=self.parse,
+        yield Request(search_url, callback=self.parse,
                 meta={'search_url': search_url})
 
 
@@ -48,7 +48,7 @@ class SaleinfoSpider(scrapy.Spider):
             house_detail_url = "{}home/house/detail/2/{}.html".format(
                 self.start_urls[0], house_id)
             print("Crawling Detail url : {}".format(house_detail_url))
-            yield scrapy.Request(house_detail_url, callback=self.get_house_details,
+            yield Request(house_detail_url, callback=self.get_house_details,
                     meta={'house_detail_url': house_detail_url, 'ID': house_id})
 
         # Yield house list
