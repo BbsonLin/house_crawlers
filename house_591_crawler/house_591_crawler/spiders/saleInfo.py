@@ -23,18 +23,20 @@ class SaleinfoSpider(scrapy.Spider):
     row_number = 0
     house_list = list()
 
+
     def __init__(self, regionid=1, *args, **kwargs):
         self.region_id = regionid
+
 
     def start_requests(self):
         search_url = \
             "{}/home/search/list?type=2&&shType=host&&regionid={}".format(
                 self.start_urls[0], self.region_id)
-        yield Request(search_url, callback=self.parse_response,
-                      meta={'search_url': search_url})
+        yield scrapy.Request(search_url, callback=self.parse,
+                meta={'search_url': search_url})
+
 
     def parse(self, response):
-
         # Get JSON data of search_url
         response_body = response.body.decode('utf-8')
         data          = json.loads(response_body)['data']
@@ -46,8 +48,8 @@ class SaleinfoSpider(scrapy.Spider):
             house_detail_url = "{}home/house/detail/2/{}.html".format(
                 self.start_urls[0], house_id)
             print("Crawling Detail url : {}".format(house_detail_url))
-            yield Request(house_detail_url, callback=self.get_house_details,
-                          meta={'house_detail_url': house_detail_url, 'ID': house_id})
+            yield scrapy.Request(house_detail_url, callback=self.get_house_details,
+                    meta={'house_detail_url': house_detail_url, 'ID': house_id})
 
         # Yield house list
         self.house_list += data['house_list']
@@ -77,13 +79,13 @@ class SaleinfoSpider(scrapy.Spider):
             yield data
 
     def get_house_details(self, response):
-        price_arr = response.xpath('string(//div/span[@class="info-price-num"])').extract().pop(0)
-        price     = price_arr.split(' ').pop(0)
-        unit      = response.xpath('string(//div/span[@classclass="info-price-unit"])').extract().pop(0)
-        address   = response.xpath('//div/span[@class="info-addr-value"]/text()').extract().pop()
-        owner     = response.xpath('string(//div/span[@class="info-span-name"])').extract().pop(0)
-        owner_msg = response.xpath('string(//div/span[@class="info-span-msg"])').extract().pop(0)
-        phone     = response.xpath('string(//div/span[@class="info-host-word"])').extract().pop(0)
+        price_arr = response.xpath('//div/span[@class="info-price-num"]/text())').extract().pop(0)
+        price = price_arr.split(' ').pop(0)
+        unit = response.xpath('//div/span[@class="info-price-unit"]text()').extract().pop(0)
+        address = response.xpath('//div/span[@class="info-addr-value"]/text()').extract().pop()
+        owner = response.xpath('//div/span[@class="info-span-name"]/text())').extract().pop(0)
+        owner_msg = response.xpath('//div/span[@class="info-span-msg"]/text())').extract().pop(0)
+        phone = response.xpath('//div/span[@class="info-host-word"]/text())').extract().pop(0)
         print("HOUSE_ID = %s" % response.meta['ID'])
         print("PRICE    = %s" % price)
         print("UNIT     = %s" % unit)
@@ -96,5 +98,6 @@ class SaleinfoSpider(scrapy.Spider):
                 'address'   : address,
                 'owner'     : owner,
                 'owner_msg' : owner_msg,
-                'phone'     : phone 
+                'phone'     : phone
         }
+
