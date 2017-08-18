@@ -9,7 +9,7 @@ Guideline for using house-crawlers
 $ virtualenv venv
 $ cd venv/
 $ . bin/activate
-$ pip install scrapy
+$ pip install scrapy==1.4.0
 ```
 
 ## For Ubuntu leaving virtualenv
