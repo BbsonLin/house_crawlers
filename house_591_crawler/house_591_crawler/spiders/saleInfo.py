@@ -23,17 +23,15 @@ class SaleinfoSpider(scrapy.Spider):
     row_number = 0
     house_list = list()
 
-
     def __init__(self, regionid=1, *args, **kwargs):
         self.region_id = regionid
-
 
     def start_requests(self):
         search_url = \
             "{}/home/search/list?type=2&&shType=host&&regionid={}".format(
                 self.start_urls[0], self.region_id)
-        yield scrapy.Request(search_url, callback=self.parse, meta={'search_url': search_url})
-        
+        yield Request(search_url, callback=self.parse_response,
+                      meta={'search_url': search_url})
 
     def parse(self, response):
 
@@ -48,7 +46,8 @@ class SaleinfoSpider(scrapy.Spider):
             house_detail_url = "{}home/house/detail/2/{}.html".format(
                 self.start_urls[0], house_id)
             print("Crawling Detail url : {}".format(house_detail_url))
-            yield scrapy.Request(house_detail_url, callback=self.get_house_details, meta={'house_detail_url': house_detail_url, 'ID': house_id})
+            yield Request(house_detail_url, callback=self.get_house_details,
+                          meta={'house_detail_url': house_detail_url, 'ID': house_id})
 
         # Yield house list
         self.house_list += data['house_list']
@@ -99,4 +98,3 @@ class SaleinfoSpider(scrapy.Spider):
                 'owner_msg' : owner_msg,
                 'phone'     : phone 
         }
-
