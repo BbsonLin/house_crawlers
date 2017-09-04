@@ -44,7 +44,10 @@ if __name__ == '__main__':
 
         data=""
         with open("{}saleInfo{}.json".format(results_folder, i), "r") as file:
-            data = json.load(file)
+            try:
+                data = json.load(file)
+            except json.decoder.JSONDecodeError:
+                continue
 
         # Insert data into firebase
         db.child("house_591").child("sale").child(i).set(data)
